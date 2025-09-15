@@ -1,0 +1,104 @@
+[2025-09-15T02:28:00.017Z] INFO: Today is a workday
+[2025-09-15T02:28:00.017Z] INFO: Current time: 10:28
+[2025-09-15T02:29:00.014Z] INFO: Today is a workday
+[2025-09-15T02:29:00.015Z] INFO: Current time: 10:29
+[2025-09-15T02:30:00.014Z] INFO: Today is a workday
+[2025-09-15T02:30:00.014Z] INFO: Current time: 10:30
+[2025-09-15T02:30:00.251Z] INFO: Sending message to DingTalk: #### 【喝水提醒】深圳市福田 多云 30℃  
+ > #####  天气：多云  
+ > ##### 温度：30℃ (体感32℃)  
+ > ##### 风力：北风1级  
+ > ##### 空气质量：14 (PM2.5: 8)  
+ > #####  打工人，喝水续命，别让老板看到你渴晕在工位上！  
+ > ##### 10:30:00发布 [天气](https://www.dingtalk.com)
+[2025-09-15T02:31:00.013Z] INFO: Today is a workday
+[2025-09-15T02:31:00.014Z] INFO: Current time: 10:31
+[2025-09-15T02:32:00.012Z] INFO: Today is a workday
+[2025-09-15T02:32:00.013Z] INFO: Current time: 10:32
+[2025-09-15T02:33:00.009Z] INFO: Today is a workday
+[2025-09-15T02:33:00.010Z] INFO: Current time: 10:33
+[2025-09-15T02:34:00.017Z] INFO: Today is a workday
+[2025-09-15T02:34:00.017Z] INFO: Current time: 10:34
+[2025-09-15T02:35:00.018Z] INFO: Today is a workday
+[2025-09-15T02:35:00.018Z] INFO: Current time: 10:35
+[2025-09-15T02:36:00.006Z] INFO: Today is a workday
+[2025-09-15T02:36:00.006Z] INFO: Current time: 10:36
+[2025-09-15T02:37:00.016Z] INFO: Today is a workday
+[2025-09-15T02:37:00.016Z] INFO: Current time: 10:37
+[2025-09-15T02:38:00.014Z] INFO: Today is a workday
+[2025-09-15T02:38:00.014Z] INFO: Current time: 10:38
+[2025-09-15T02:39:00.013Z] INFO: Today is a workday
+[2025-09-15T02:39:00.014Z] INFO: Current time: 10:39
+[2025-09-15T02:40:00.009Z] INFO: Today is a workday
+[2025-09-15T02:40:00.010Z] INFO: Current time: 10:40
+[2025-09-15T02:41:00.012Z] INFO: Today is a workday
+[2025-09-15T02:41:00.013Z] INFO: Current time: 10:41
+[2025-09-15T02:42:00.016Z] INFO: Today is a workday
+[2025-09-15T02:42:00.017Z] INFO: Current time: 10:42
+[2025-09-15T02:43:00.008Z] INFO: Today is a workday
+[2025-09-15T02:43:00.009Z] INFO: Current time: 10:43
+[2025-09-15T02:44:00.007Z] INFO: Today is a workday
+[2025-09-15T02:44:00.007Z] INFO: Current time: 10:44
+[2025-09-15T02:45:00.005Z] INFO: Today is a workday
+[2025-09-15T02:45:00.005Z] INFO: Current time: 10:45
+[2025-09-15T02:45:00.006Z] INFO: Sending message to DingTalk: #### 【午餐预警】10:45 点外卖时间到！  
+ > ##### 打工人的午餐续命时刻到啦！
+ > ##### 别饿着自己，点外卖冲鸭！
+ > ##### 10:45:00
+[2025-09-15T02:46:00.006Z] INFO: Today is a workday
+[2025-09-15T02:46:00.007Z] INFO: Current time: 10:46
+[2025-09-15T02:47:00.018Z] INFO: Today is a workday
+[2025-09-15T02:47:00.019Z] INFO: Current time: 10:47
+[2025-09-15T02:48:00.019Z] INFO: Today is a workday
+[2025-09-15T02:48:00.019Z] INFO: Current time: 10:48
+[2025-09-15T02:49:00.015Z] INFO: Today is a workday
+[2025-09-15T02:49:00.016Z] INFO: Current time: 10:49
+[2025-09-15T02:50:00.013Z] INFO: Today is a workday
+[2025-09-15T02:50:00.014Z] INFO: Current time: 10:50
+[2025-09-15T02:51:00.015Z] INFO: Today is a workday
+[2025-09-15T02:51:00.016Z] INFO: Current time: 10:51
+[2025-09-15T02:52:00.007Z] INFO: Today is a workday
+[2025-09-15T02:52:00.007Z] INFO: Current time: 10:52
+[2025-09-15T02:53:00.004Z] INFO: Today is a workday
+[2025-09-15T02:53:00.005Z] INFO: Current time: 10:53
+[2025-09-15T02:54:00.009Z] INFO: Today is a workday
+[2025-09-15T02:54:00.010Z] INFO: Current time: 10:54
+[2025-09-15T02:55:00.008Z] INFO: Today is a workday
+[2025-09-15T02:55:00.009Z] INFO: Current time: 10:55
+[2025-09-15T02:56:00.012Z] INFO: Today is a workday
+[2025-09-15T02:56:00.013Z] INFO: Current time: 10:56
+[2025-09-15T02:57:00.010Z] INFO: Today is a workday
+[2025-09-15T02:57:00.010Z] INFO: Current time: 10:57
+[2025-09-15T02:58:00.010Z] INFO: Today is a workday
+[2025-09-15T02:58:00.010Z] INFO: Current time: 10:58
+[2025-09-15T02:59:00.006Z] INFO: Today is a workday
+[2025-09-15T02:59:00.007Z] INFO: Current time: 10:59
+[2025-09-15T03:00:00.014Z] INFO: Today is a workday
+[2025-09-15T03:00:00.015Z] INFO: Current time: 11:0
+[2025-09-15T03:00:00.618Z] INFO: Sending message to DingTalk: #### 【喝水提醒】深圳市福田 多云 30℃  
+ > #####  天气：多云  
+ > ##### 温度：30℃ (体感32℃)  
+ > ##### 风力：北风1级  
+ > ##### 空气质量：18 (PM2.5: 9)  
+ > #####  水是免费的，健康无价，起来灌一杯！  
+ > ##### 11:00:00发布 [天气](https://www.dingtalk.com)
+[2025-09-15T03:01:00.015Z] INFO: Today is a workday
+[2025-09-15T03:01:00.016Z] INFO: Current time: 11:1
+[2025-09-15T03:02:00.013Z] INFO: Today is a workday
+[2025-09-15T03:02:00.014Z] INFO: Current time: 11:2
+[2025-09-15T03:03:00.014Z] INFO: Today is a workday
+[2025-09-15T03:03:00.016Z] INFO: Current time: 11:3
+[2025-09-15T03:04:00.016Z] INFO: Today is a workday
+[2025-09-15T03:04:00.017Z] INFO: Current time: 11:4
+[2025-09-15T03:05:00.016Z] INFO: Today is a workday
+[2025-09-15T03:05:00.016Z] INFO: Current time: 11:5
+[2025-09-15T03:09:19.568Z] INFO: ✅ 环境变量检查通过
+[2025-09-15T03:09:19.568Z] INFO: 🚀 启动通知机器人...
+[2025-09-15T03:10:00.018Z] INFO: Today is a workday
+[2025-09-15T03:10:00.019Z] INFO: Current time: 11:10
+[2025-09-15T03:11:00.003Z] INFO: Today is a workday
+[2025-09-15T03:11:00.003Z] INFO: Current time: 11:11
+[2025-09-15T03:12:00.009Z] INFO: Today is a workday
+[2025-09-15T03:12:00.009Z] INFO: Current time: 11:12
+[2025-09-15T03:13:00.011Z] INFO: Today is a workday
+[2025-09-15T03:13:00.012Z] INFO: Current time: 11:13
