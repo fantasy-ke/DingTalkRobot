@@ -19,6 +19,10 @@ function generateWaterReminders() {
         if (hour === 9 && minute === 0) {
           continue;
         }
+        // 跳过14:00，因为14:00要发送下午上班时间提示
+        if (hour === 14 && minute === 0) {
+          continue;
+        }
         reminders.push({
           time: { hour, minute },
           title: "【喝水提醒】",
@@ -47,6 +51,11 @@ const reminderTasks = [
     time: { hour: 11, minute: 55 },
     title: "【开饭啦】11:55 外卖取餐提醒",
     text: "#### 【开饭啦】11:55 外卖取餐提醒  \n > ##### 外卖已到，摸鱼时间结束，开饭啦！\n > ##### 别让美食等太久哦~\n > ##### {time}"
+  },
+  {
+    time: { hour: 14, minute: 0 },
+    title: "【下午上班提醒】14:00 牛马模式继续！",
+    text: "#### 【下午上班提醒】14:00 牛马模式继续！  \n > ##### {afternoonWorkStartTip}  \n > ##### 下午也要元气满满哦，加油打工人！\n > ##### {time}"
   },
   {
     time: { hour: 18, minute: 45 },
@@ -81,6 +90,20 @@ const workStartTips = [
   "9点整！该去工位续命了，不然今天又要饿肚子！"
 ];
 
+// 下午上班时间提示语数组
+const afternoonWorkStartTips = [
+  "下午牛马模式重启！午休结束，继续搬砖！",
+  "下午上班时间到！睡醒了吗？该起来搬砖了！",
+  "下午2点整，社畜续命时间到！",
+  "午休结束，打工人该回去被老板毒打了！",
+  "下午场开始营业了！打工人，冲鸭！",
+  "下午的工作在召唤你！别再摸鱼了！",
+  "下午上班时间到！咖啡续命，社畜重启！",
+  "下午2点，牛马模式加载完成，开始工作！",
+  "午休结束，打工人的下午场开始了！",
+  "下午上班时间到！记得泡杯咖啡续命哦！"
+];
+
 function getRandomTip(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
@@ -113,6 +136,11 @@ async function handleTasks() {
         // 如果是上班时间提示，替换随机提示语
         if (task.time.hour === 9 && task.time.minute === 0) {
           messageText = messageText.replace('{workStartTip}', getRandomTip(workStartTips));
+        }
+        
+        // 如果是下午上班时间提示，替换随机提示语
+        if (task.time.hour === 14 && task.time.minute === 0) {
+          messageText = messageText.replace('{afternoonWorkStartTip}', getRandomTip(afternoonWorkStartTips));
         }
         
         await sendDingTalkMsg(messageText, task.title);
