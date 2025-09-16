@@ -36,7 +36,7 @@ function generateWaterReminders() {
 
 // 定义所有提醒任务
 const reminderTasks = [
-  ...generateWaterReminders(),
+  // ...generateWaterReminders(),
   {
     time: { hour: 9, minute: 0 },
     title: "【上班时间到】9:00 牛马模式启动！",
