@@ -8,19 +8,19 @@ import { logError, logInfo } from './logger.js';
 function generateWaterReminders() {
   const reminders = [];
   const workHours = [
-    { start: 9, end: 11 },   // 上午（包含9点，但9:00会被特殊处理）
-    { start: 14, end: 18 }   // 下午
+    { start: 10, end: 11 },   // 上午（包含9点，但9:00会被特殊处理）
+    { start: 15, end: 18 }   // 下午
   ];
 
   for (const period of workHours) {
     for (let hour = period.start; hour <= period.end; hour++) {
       for (let minute of [0, 30]) {  // 每小时的0分和30分
         // 跳过9:00，因为9:00要发送上班时间提示
-        if (hour === 9 && minute === 0) {
-          continue;
-        }
-        // 跳过14:00，因为14:00要发送下午上班时间提示
-        if (hour === 14 && minute === 0) {
+        // if (hour === 9 && minute === 0) {
+        //   continue;
+        // }
+        // 跳过18：30，因为18:45要发送下班时间提示
+        if (hour === 18 && minute === 30) {
           continue;
         }
         reminders.push({
