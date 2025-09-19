@@ -6,6 +6,8 @@ dotenv.config();
 
 // 检查必需的环境变量
 const requiredEnvVars = [
+  'DINGTALK_WATER_ACCESS_TOKEN',
+  'DINGTALK_WATER_SECRET',
   'DINGTALK_ACCESS_TOKEN',
   'DINGTALK_SECRET', 
   'BAIDU_AK'

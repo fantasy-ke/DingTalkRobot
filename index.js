@@ -3,24 +3,35 @@ import fetch from 'node-fetch'
 import crypto from 'crypto';
 import { getWorkdaysForThisYear, isTodayWorkday, scheduleNextYearFetch } from './holidays.js';
 import { logError, logInfo } from './logger.js';
+import fs from 'fs/promises';
+
+async function getReminderConfig() {
+  try {
+    const data = await fs.readFile('./reminderConfig.json', 'utf8');
+    return JSON.parse(data);
+  } catch (error) {
+    logError(error, 'Error reading reminderConfig.json');
+    // 如果读取失败，使用默认配置
+    return {
+      workHours: [
+        { start: 9, end: 11 }, // 上午
+        { start: 15, end: 18 }, // 下午
+      ],
+    };
+  }
+}
 
 // 生成喝水提醒任务
-function generateWaterReminders() {
+async function generateWaterReminders() {
   const reminders = [];
-  const workHours = [
-    { start: 10, end: 11 },   // 上午（包含9点，但9:00会被特殊处理）
-    { start: 15, end: 18 }   // 下午
-  ];
+  const config = await getReminderConfig();
+  const { workHours } = config;
 
   for (const period of workHours) {
     for (let hour = period.start; hour <= period.end; hour++) {
-      for (let minute of [0, 30]) {  // 每小时的0分和30分
-        // 跳过9:00，因为9:00要发送上班时间提示
-        // if (hour === 9 && minute === 0) {
-        //   continue;
-        // }
-        // 跳过18：30，因为18:45要发送下班时间提示
-        if (hour === 18 && minute === 30) {
+      for (let minute of [0, 30]) {
+        const time = { hour, minute };
+        if (shouldSkipReminder(time)) {
           continue;
         }
         reminders.push({
@@ -36,7 +47,7 @@ function generateWaterReminders() {
 
 // 定义所有提醒任务
 const reminderTasks = [
-  // ...generateWaterReminders(),
+  ...generateWaterReminders(),
   {
     time: { hour: 9, minute: 0 },
     title: "【上班时间到】9:00 牛马模式启动！",
@@ -120,38 +131,46 @@ async function handleTasks() {
     const currentHour = now.getHours();
     const currentMinute = now.getMinutes();
     logInfo(`Current time: ${currentHour}:${currentMinute}`);
-    // 查找当前时间需要执行的任务
-    const currentTasks = reminderTasks.filter(
-      task => task.time.hour === currentHour && task.time.minute === currentMinute
-    );
+    const currentTasks = getTasksToRun({ hour: currentHour, minute: currentMinute }, reminderTasks);
 
     for (const task of currentTasks) {
-      if (task.needWeather) {
-        // 获取天气数据并发送提醒
-        await sendWeatherReminder();
-      } else {
-        // 发送普通提醒
-        let messageText = task.text.replace('{time}', new Date().toLocaleTimeString());
-        
-        // 如果是上班时间提示，替换随机提示语
-        if (task.time.hour === 9 && task.time.minute === 0) {
-          messageText = messageText.replace('{workStartTip}', getRandomTip(workStartTips));
-        }
-        
-        // 如果是下午上班时间提示，替换随机提示语
-        if (task.time.hour === 14 && task.time.minute === 0) {
-          messageText = messageText.replace('{afternoonWorkStartTip}', getRandomTip(afternoonWorkStartTips));
-        }
-        
-        await sendDingTalkMsg(messageText, task.title);
-      }
+      await processTask(task);
     }
   } catch (error) {
     logError(error, 'Error in handleTasks function');
   }
 }
 
-// 统一的天气提醒函数
+function getTasksToRun(currentTime, tasks) {
+  const { hour, minute } = currentTime;
+  return tasks.filter(task => task.time.hour === hour && task.time.minute === minute);
+}
+
+async function processTask(task) {
+  try {
+    if (task.needWeather) {
+      await sendWeatherReminder();
+    } else {
+      let messageText = task.text.replace('{time}', new Date().toLocaleTimeString());
+
+      // 如果是上班时间提示，替换随机提示语
+      if (task.time.hour === 9 && task.time.minute === 0) {
+        messageText = messageText.replace('{workStartTip}', getRandomTip(workStartTips));
+      }
+
+      // 如果是下午上班时间提示，替换随机提示语
+      if (task.time.hour === 14 && task.time.minute === 0) {
+        messageText = messageText.replace('{afternoonWorkStartTip}', getRandomTip(afternoonWorkStartTips));
+      }
+
+      await sendDingTalkMsg(messageText, task.title);
+    }
+  } catch (error) {
+    logError(error, 'Error processing task');
+  }
+}
+
+// 统一的天气提醒函数（使用喝水机器人）
 async function sendWeatherReminder() {
   try {
     let districtId = process.env.BAIDU_DISTRICT_ID || '440304'
@@ -160,10 +179,10 @@ async function sendWeatherReminder() {
       throw new Error('BAIDU_AK environment variable is required')
     }
     let bdurl = `https://api.map.baidu.com/weather/v1/?district_id=${districtId}&data_type=all&ak=${ak}`
-    
+
     let res = await fetch(bdurl)
     let data = await res.json()
-    
+
     const city = data.result.location.city;
     const district = data.result.location.name;
     const weather = data.result.now.text;
@@ -172,27 +191,40 @@ async function sendWeatherReminder() {
     const wind = data.result.now.wind_dir + data.result.now.wind_class;
     const aqi = data.result.now.aqi;
     const pm25 = data.result.now.pm25;
-    
+
     const title = `【喝水提醒】${city}${district} ${weather} ${temp}℃`;
     const text = `#### 【喝水提醒】${city}${district} ${weather} ${temp}℃  \n > #####  天气：${weather}  \n > ##### 温度：${temp}℃ (体感${feels}℃)  \n > ##### 风力：${wind}  \n > ##### 空气质量：${aqi} (PM2.5: ${pm25})  \n > #####  ${getRandomTip(waterTips)}  \n > ##### ${new Date().toLocaleTimeString()}发布 [天气](https://www.dingtalk.com)`;
-    
-    await sendDingTalkMsg(text, title);
+
+    await sendDingTalkMsg(text, title, { bot: 'water' });
   } catch (error) {
     logError(error, 'Error in sendWeatherReminder function');
     throw error;
   }
 }
 
-// 封装发送钉钉消息的函数
-async function sendDingTalkMsg(text, title = "提醒") {
+function resolveDingTalkCredentials(bot = 'default') {
+  if (bot === 'water' && process.env.DINGTALK_WATER_ACCESS_TOKEN && process.env.DINGTALK_WATER_SECRET) {
+    return {
+      accessToken: process.env.DINGTALK_WATER_ACCESS_TOKEN,
+      secret: process.env.DINGTALK_WATER_SECRET
+    };
+  }
+  return {
+    accessToken: process.env.DINGTALK_ACCESS_TOKEN,
+    secret: process.env.DINGTALK_SECRET
+  };
+}
+
+// 封装发送钉钉消息的函数（支持不同机器人）
+async function sendDingTalkMsg(text, title = "提醒", options = {}) {
   try {
-    let accessToken = process.env.DINGTALK_ACCESS_TOKEN
-    let secret = process.env.DINGTALK_SECRET
-    
+    const bot = options.bot || 'default';
+    const { accessToken, secret } = resolveDingTalkCredentials(bot);
+
     if (!accessToken || !secret) {
       throw new Error('DINGTALK_ACCESS_TOKEN and DINGTALK_SECRET environment variables are required')
     }
-    
+
     let url = `https://oapi.dingtalk.com/robot/send?access_token=${accessToken}`;
     let time = Date.now();
     let stringToSign = time + "\n" + secret;
@@ -206,7 +238,7 @@ async function sendDingTalkMsg(text, title = "提醒") {
         "text": text
       }
     };
-    logInfo(`Sending message to DingTalk: ${text}`);
+    logInfo(`Sending message to DingTalk(${bot}): ${text}`);
     await fetch(url, {
       method: 'post',
       body: JSON.stringify(body),
@@ -234,3 +266,8 @@ let workdaysPromise = getWorkdaysForThisYear().catch(error => {
 });
 // 每年12月31日自动拉取下一年
 scheduleNextYearFetch(schedule);
+
+function shouldSkipReminder(time) {
+  const { hour, minute } = time;
+  return (hour === 9 && minute === 0) || (hour === 18 && minute === 30);
+}
